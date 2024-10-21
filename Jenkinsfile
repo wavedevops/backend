@@ -7,8 +7,8 @@ pipeline {
         ansiColor('xterm')        // Enable ANSI color output
         disableConcurrentBuilds() // Ensure the pipeline runs only once at a time
     }
-        environment {
-    }
+    //     environment {
+    // }
 
     stages {
         stage('Install Dependencies') {
