@@ -7,8 +7,8 @@ pipeline {
         ansiColor('xterm')        // Enable ANSI color output
         disableConcurrentBuilds() // Ensure the pipeline runs only once at a time
     }
-        environment {
-            appVersion = ''
+    environment{
+        def appVersion = '' //variable declaration
     }
 
     stages {
@@ -28,7 +28,7 @@ pipeline {
         }
         stage('test line') {
             steps {
-                echo "app version = ${appVersion}"
+                echo "app version = $appVersion"
             }
         }
     }
