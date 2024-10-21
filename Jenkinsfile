@@ -7,8 +7,9 @@ pipeline {
         ansiColor('xterm')        // Enable ANSI color output
         disableConcurrentBuilds() // Ensure the pipeline runs only once at a time
     }
-    //     environment {
-    // }
+        environment {
+            packageJson = ''
+    }
 
     stages {
         stage('Install Dependencies') {
@@ -25,12 +26,11 @@ pipeline {
                 }
             }
         }
-        // stage('test line') {
-        //     steps {
-        //         echo "app version = ${appVersion}"
-        //         echo "app version : $appVersion"
-        //     }
-        // }
+        stage('test line') {
+            steps {
+                echo "app version = ${packageJson}"
+            }
+        }
     }
 
     post { 
