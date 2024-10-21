@@ -8,7 +8,7 @@ pipeline {
         disableConcurrentBuilds() // Ensure the pipeline runs only once at a time
     }
         environment {
-            packageJson = ''
+            appVersion = ''
     }
 
     stages {
@@ -28,7 +28,7 @@ pipeline {
         }
         stage('test line') {
             steps {
-                echo "app version = ${packageJson}"
+                echo "app version = ${appVersion}"
             }
         }
     }
