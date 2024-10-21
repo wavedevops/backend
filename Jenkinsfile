@@ -24,15 +24,16 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo 'Pipeline execution completed. Deleting logs...'
+    post { 
+        always { 
+            echo 'I will always say Hello again!'
+            deleteDir()
         }
-        success {
-            echo 'Pipeline executed successfully!'
+        success { 
+            echo 'I will run when pipeline is success'
         }
-        failure {
-            echo 'Pipeline failed. Please check the logs.'
+        failure { 
+            echo 'I will run when pipeline is failure'
         }
     }
 }
