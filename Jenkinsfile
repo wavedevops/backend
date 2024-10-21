@@ -8,8 +8,6 @@ pipeline {
         disableConcurrentBuilds() // Ensure the pipeline runs only once at a time
     }
         environment {
-        def packageJson = readJSON file: 'package.json'
-        def appVersion = packageJson.version
     }
 
     stages {
@@ -18,12 +16,19 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('test line') {
-            steps {
+        stage('env variables'){
+            steps{
+                def packageJson = readJSON file: 'package.json'
+                def appVersion = packageJson.version
                 echo "app version = ${appVersion}"
-                echo "app version : $appVersion"
             }
         }
+        // stage('test line') {
+        //     steps {
+        //         echo "app version = ${appVersion}"
+        //         echo "app version : $appVersion"
+        //     }
+        // }
     }
 
     post { 
