@@ -9,14 +9,6 @@ pipeline {
     }
 
     stages {
-        stage('test') {
-            steps{
-                sh '''
-                echo "this is testing"
-                ls  -ltr
-                '''
-            }
-        }
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -27,7 +19,7 @@ pipeline {
     post { 
         always { 
             echo 'I will always say Hello again!'
-            deleteDir()
+            deleteDir() 
         }
         success { 
             echo 'I will run when pipeline is success'
