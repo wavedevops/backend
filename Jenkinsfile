@@ -21,9 +21,7 @@ pipeline {
     post {
         always {
             echo 'Pipeline execution completed. Deleting logs...'
-            script {
-                deleteLogs()
-            }
+            deleteLogs()
         }
         success {
             echo 'Pipeline executed successfully!'
