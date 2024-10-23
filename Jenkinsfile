@@ -1,3 +1,4 @@
+// it is a ci job  upstream job
 pipeline {
     agent {
         label 'workstation' // Use the appropriate label for your node
@@ -63,7 +64,11 @@ pipeline {
             }
         }
     }
-
+        stage ('Starting downstream job ') {
+            steps {
+                build job: 'backend-deploy', parameters: [string(name: 'targetEnvironment', value: 'stage')], propagate: false
+            }
+        }
     post { 
         always { 
             echo 'I will always say Hello again!'
