@@ -66,9 +66,14 @@ pipeline {
     }
         stage ('Starting downstream job ') {
             steps {
-                build job: 'backend-deploy', parameters: [string(name: 'targetEnvironment', value: 'stage')], propagate: false
+                def params = [string(name: 'AppVersion', value: "${appVersion}")]
+                
+                script{
+                    build job: 'backend-deploy', parameters: params, wait: false
+                }
             }
         }
+        
     post { 
         always { 
             echo 'I will always say Hello again!'
