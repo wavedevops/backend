@@ -11,7 +11,7 @@ pipeline {
     environment {
         // Placeholder - environment variables cannot use 'read JSON' directly.
         appVersion = '' 
-        nexusUrl = 'http://nexus.chaitu.net/repository/backend/'
+        nexusUrl = 'https://nexus.chaitu.net/repository/backend/'
         component = 'backend'
     }
 
