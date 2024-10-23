@@ -64,16 +64,17 @@ pipeline {
             }
         }
     }
-        stage ('Starting downstream job ') {
+    stage('Deploy'){
+        steps{
             script{
-                steps {
-                    def params = [
-                        string(name: 'AppVersion', value: "${appVersion}")
-                    ]
-                    build job: 'backend-deploy', parameters: params, wait: false
-                } 
+                def params = [
+                    string(name: 'appVersion', value: "${appVersion}")
+                ]
+                build job: 'backend-deploy', parameters: params, wait: false
             }
         }
+    }
+
 
     post { 
         always { 
