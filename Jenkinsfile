@@ -51,7 +51,7 @@ pipeline {
                         groupId: 'com.expense',
                         version: "${appVersion}",
                         repository: "${component}",
-                        credentialsId: 'nexus-api-key',
+                        credentialsId: 'nexus-auth',
                         artifacts: [
                             [artifactId: "${component}" ,
                             classifier: '',
