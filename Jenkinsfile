@@ -32,7 +32,16 @@ pipeline {
             }
         }
 
-        stage('Test Line') {
+                stage('Build') {
+            steps {
+                sh """
+                zip -r -q "${component}-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
+                ls -ltr
+                """
+            }
+        }
+
+        stage('Nexus Artifact Upload ') {
             steps {
                 script {
                     nexusArtifactUploader(
@@ -41,10 +50,10 @@ pipeline {
                         nexusUrl: "${nexusUrl}",
                         groupId: 'com.expense',
                         version: "${appVersion}",
-                        repository: 'backend',
+                        repository: "${component}",
                         credentialsId: 'nexus-auth',
                         artifacts: [
-                            [artifactId: 'backend' ,
+                            [artifactId: "${component}" ,
                             classifier: '',
                             file: "${component}-" + "${appVersion}" + '.zip',
                             type: 'zip']
@@ -53,21 +62,12 @@ pipeline {
                 }
             }
         }
-
-        stage('Build') {
-            steps {
-                sh """
-                zip -r -q backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
-                ls -ltr
-                """
-            }
-        }
     }
 
     post { 
         always { 
             echo 'I will always say Hello again!'
-            //deleteDir() // Clean up the workspace
+            deleteDir() // Clean up the workspace
         }
         success { 
             echo 'I will run when pipeline is successful'
