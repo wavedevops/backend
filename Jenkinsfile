@@ -9,8 +9,10 @@ pipeline {
     }
 
     environment {
-        // Placeholder - environment variables cannot use 'readJSON' directly.
+        // Placeholder - environment variables cannot use 'read JSON' directly.
         appVersion = '' 
+        nexusUrl = 'http://nexus.chaitu.net/repository/backend/'
+        component = 'backend'
     }
 
     stages {
@@ -20,7 +22,7 @@ pipeline {
                     def packageJson = readJSON file: 'package.json'
                     appVersion = packageJson.version // Assign version to environment variable
                 }
-                echo "Loaded app version: $appVersion"
+                echo "Loaded app version: ${appVersion}"
             }
         }
 
@@ -32,7 +34,22 @@ pipeline {
 
         stage('Test Line') {
             steps {
-                echo "App version = ${appVersion}"
+                script {
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${nexusUrl}",
+                        groupId: 'com.expense',
+                        version: "${appVersion}",
+                        repository: 'backend',
+                        credentialsId: 'nexus-auth',
+                        artifacts: [
+                            [artifactId: 'backend' ,
+                            classifier: '',
+                            file: "${component}-" + "${appVersion}" + '.zip',
+                            type: 'zip']
+                        ]
+                    )
             }
         }
 
