@@ -9,7 +9,6 @@ pipeline {
     }
 
     environment {
-        // Placeholder - environment variables cannot use 'read JSON' directly.
         appVersion = '' 
         nexusUrl = 'https://nexus.chaitu.net/repository/backend/'
         component = 'backend'
@@ -32,31 +31,31 @@ pipeline {
             }
         }
 
-                stage('Build') {
+        stage('Build') {
             steps {
                 sh """
-                zip -r -q ${component}-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
+                zip -r -q ${component}-${appVersion}.zip * -x Jenkinsfile -x ${component}-${appVersion}.zip
                 ls -ltr
                 """
             }
         }
 
-        stage('Nexus Artifact Upload ') {
+        stage('Nexus Artifact Upload') {
             steps {
                 script {
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: "${nexusUrl}",
+                        protocol: 'https', // Use 'https' if your Nexus server uses SSL
+                        nexusUrl: nexusUrl,
                         groupId: 'com.expense',
                         version: "${appVersion}",
                         repository: "${component}",
                         credentialsId: 'nexus-auth',
                         artifacts: [
-                            [artifactId: "${component}" ,
-                            classifier: '',
-                            file: "${component}-" + "${appVersion}" + '.zip',
-                            type: 'zip']
+                            [artifactId: "${component}",
+                             classifier: '',
+                             file: "${component}-${appVersion}.zip",
+                             type: 'zip']
                         ]
                     )
                 }
@@ -70,7 +69,7 @@ pipeline {
             deleteDir() // Clean up the workspace
         }
         success { 
-            echo 'I will run when pipeline is successful'
+            echo 'I will run when the pipeline is successful'
         }
         failure { 
             echo 'I will run when the pipeline fails'
