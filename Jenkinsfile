@@ -50,6 +50,7 @@ pipeline {
                             type: 'zip']
                         ]
                     )
+                }
             }
         }
 
