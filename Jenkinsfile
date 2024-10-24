@@ -62,18 +62,18 @@ pipeline {
             }
         }
 
-        stage('Trigger Downstream Deployment Job') {
-        //     steps {
-        //         script {
-        //             def params = [
-        //                 string(name: 'appVersion', value: "${appVersion}")
-        //             ]
-        //             // Current job is the upstream job, triggering 'backend-deploy' as the downstream job
-        //             build job: 'backend-deploy', parameters: params, wait: false
-        //         }
-        //     }
-        // }
-    }
+    //     stage('Trigger Downstream Deployment Job') {
+    //         steps {
+    //             script {
+    //                 def params = [
+    //                     string(name: 'appVersion', value: "${appVersion}")
+    //                 ]
+    //                 // Current job is the upstream job, triggering 'backend-deploy' as the downstream job
+    //                 build job: 'backend-deploy', parameters: params, wait: false
+    //             }
+    //         }
+    //     }
+    // }
 
     post { 
         always { 
