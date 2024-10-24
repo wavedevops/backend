@@ -15,7 +15,7 @@ pipeline {
     }
 
     stages {
-        stage('Load Package Version') {
+        stage('Fetch Package Version from package.json') {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
@@ -25,13 +25,13 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install NPM Dependencies') {
             steps {
                 sh 'npm install'
             }
         }
 
-        stage('Build') {
+        stage('Build and Package Application') {
             steps {
                 sh """
                 zip -r -q ${component}-${appVersion}.zip * -x Jenkinsfile -x ${component}-${appVersion}.zip
@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage('Nexus Artifact Upload') {
+        stage('Upload Artifact to Nexus Repository') {
             steps {
                 script {
                     nexusArtifactUploader(
@@ -62,13 +62,13 @@ pipeline {
             }
         }
 
-        // Move the 'Deploy' stage inside the stages block
-        stage('Deploy') {
+        stage('Trigger Downstream Deployment Job') {
             steps {
                 script {
                     def params = [
                         string(name: 'appVersion', value: "${appVersion}")
                     ]
+                    // Current job is the upstream job, triggering 'backend-deploy' as the downstream job
                     build job: 'backend-deploy', parameters: params, wait: false
                 }
             }
@@ -81,10 +81,10 @@ pipeline {
             deleteDir() // Clean up the workspace
         }
         success { 
-            echo 'I will run when pipeline is successful'
+            echo 'Pipeline executed successfully!'
         }
         failure { 
-            echo 'I will run when the pipeline fails'
+            echo 'Pipeline failed!'
         }
     }
 }
